@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using Newtonsoft.Json;
-using UnityEngine;
 
 /*
   ┎━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┒
@@ -31,17 +28,7 @@ namespace DataStructure
         public int RewardPoint { get; private set; }
 
         [JsonProperty(PropertyName = "accomplish")]
-        public bool Accomplish { get; private set; }
-
-        public void AccomplishQuest()
-        {
-            Accomplish = true;
-        }
-
-        public void RestoreQuest()
-        {
-            Accomplish = false;
-        }
+        public bool Accomplish { get; set; }
 
         public override string ToString()
         {

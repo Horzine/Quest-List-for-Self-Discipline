@@ -24,11 +24,6 @@ namespace TestCase
             var newQuest = JsonConvert.DeserializeObject<Quest>(newJson);
             Debug.Log(newQuest);
 
-            newQuest.RestoreQuest();
-            Debug.Log(newQuest);
-
-            newQuest.AccomplishQuest();
-            Debug.Log(newQuest);
         }
     }
 }
