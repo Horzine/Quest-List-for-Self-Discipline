@@ -8,11 +8,15 @@ using UnityEngine;
   ┃        Practice more !!!        ┃
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 */
-namespace DataStructure
+namespace Views.QuestList
 {
-    public class Progress
+    public class QuestListView : MonoBehaviour
     {
 
+        public void Init()
+        {
+
+        }
 
     }
 }

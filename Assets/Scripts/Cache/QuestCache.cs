@@ -10,13 +10,22 @@ using UnityEngine;
 */
 namespace Cache
 {
-    public interface IProgressCacheObserver
+    public interface IQuestCacheObserver
     {
 
     }
-    public class ProgressCache
+    public class QuestCache
     {
 
+        public void Init()
+        {
+
+        }
+
+        public void Reload()
+        {
+
+        }
 
 
     }

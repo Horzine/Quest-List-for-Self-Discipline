@@ -8,12 +8,13 @@ using UnityEngine;
   ┃        Practice more !!!        ┃
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 */
-namespace Handler
+namespace TestCase
 {
-    public class RewardHandle
+    public class TestQuest : MonoBehaviour
     {
+        private void Start()
+        {
 
-
-
+        }
     }
 }

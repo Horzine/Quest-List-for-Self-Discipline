@@ -10,16 +10,10 @@ using UnityEngine;
 */
 namespace Handler
 {
-    public class ProgressHandler
+    public class RewardHandler
     {
-        public void LoadProgress()
-        {
 
-        }
 
-        public void SaveProgress()
-        {
 
-        }
     }
 }

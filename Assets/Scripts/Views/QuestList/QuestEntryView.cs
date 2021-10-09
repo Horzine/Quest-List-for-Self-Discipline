@@ -8,11 +8,15 @@ using UnityEngine;
   ┃        Practice more !!!        ┃
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 */
-namespace DataStructure
+namespace Views.QuestList
 {
-    public class Task
+    public class QuestEntryView : MonoBehaviour
     {
 
+        public void Init()
+        {
+
+        }
 
     }
 }
