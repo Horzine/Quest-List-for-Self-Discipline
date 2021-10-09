@@ -1,5 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
+using DataStructure;
+using Newtonsoft.Json;
 using UnityEngine;
 
 /*
@@ -14,7 +14,21 @@ namespace TestCase
     {
         private void Start()
         {
+            var quest = new Quest("q_id", "q_des", 10, false);
+            Debug.Log(quest);
 
+            string json = JsonConvert.SerializeObject(quest, Formatting.Indented);
+            Debug.Log(json);
+
+            string newJson = @"{'id': 'new_id','description': 'new_des','reward_point': 99,'accomplish': true}";
+            var newQuest = JsonConvert.DeserializeObject<Quest>(newJson);
+            Debug.Log(newQuest);
+
+            newQuest.RestoreQuest();
+            Debug.Log(newQuest);
+
+            newQuest.AccomplishQuest();
+            Debug.Log(newQuest);
         }
     }
 }
