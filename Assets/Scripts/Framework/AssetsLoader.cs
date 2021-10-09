@@ -8,27 +8,11 @@ using UnityEngine;
   ┃        Practice more !!!        ┃
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 */
-public class GameInitializer : MonoBehaviour
+namespace Framework
 {
-    public static GameInitializer Instance { get; private set; }
-
-    private void Awake()
+    public class AssetsLoader
     {
-        if (!Instance)
-        {
-            Instance = this;
 
-            DontDestroyOnLoad(gameObject);
-        }
-        else if (Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-    }
-
-    private void LoadGame()
-    {
 
     }
 }
