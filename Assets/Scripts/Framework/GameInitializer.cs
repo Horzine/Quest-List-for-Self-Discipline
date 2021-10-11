@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using Cache;
 using Handler;
 using UnityEngine;
@@ -51,7 +49,7 @@ namespace Framework
 
         private void LoadMainView()
         {
-            var prefab = AssetsLoader.GetInstance().LoadGameObject("Assets/Resources/Views/MainView.prefab");
+            var prefab = AssetsLoader.GetInstance().LoadGameObject("Assets/Resources/Views/main_view.prefab");
             var view = Instantiate(prefab, _canvas).GetComponent<MainView>();
             view.Init(_questCache);
         }
