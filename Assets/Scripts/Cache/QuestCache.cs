@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using DataStructure;
-using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 /*
   ┎━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┒
@@ -27,10 +27,10 @@ namespace Cache
 
         }
 
-        public void Reload(JArray quests)
+        public void Reload(string quests)
         {
             _allQuests.Clear();
-            var questList = quests.ToObject<List<Quest>>();
+            var questList = JsonConvert.DeserializeObject<List<Quest>>(quests);
             foreach (var item in questList)
             {
                 if (item != null)

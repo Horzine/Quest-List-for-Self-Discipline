@@ -9,7 +9,7 @@ using UnityEngine;
 */
 namespace Framework
 {
-    public class PlayerPrefsHandler
+    public class Archive
     {
         public static void WriteValue<T>(string key, T value)
         {
@@ -18,29 +18,25 @@ namespace Framework
                 case TypeCode.Int32:
                     {
                         PlayerPrefs.SetInt(key, Convert.ToInt32(value));
-                        PlayerPrefs.Save();
-                        return;
+                        break;
                     }
 
                 case TypeCode.Single:
                     {
                         PlayerPrefs.SetFloat(key, Convert.ToSingle(value));
-                        PlayerPrefs.Save();
-                        return;
+                        break;
                     }
 
                 case TypeCode.String:
                     {
                         PlayerPrefs.SetString(key, Convert.ToString(value));
-                        PlayerPrefs.Save();
-                        return;
+                        break;
                     }
 
                 case TypeCode.Boolean:
                     {
                         PlayerPrefs.SetInt(key, Convert.ToInt32(value));
-                        PlayerPrefs.Save();
-                        return;
+                        break;
                     }
 
                 default:
@@ -49,6 +45,7 @@ namespace Framework
                         return;
                     }
             }
+            PlayerPrefs.Save();
         }
 
         public static T ReadValue<T>(string key)

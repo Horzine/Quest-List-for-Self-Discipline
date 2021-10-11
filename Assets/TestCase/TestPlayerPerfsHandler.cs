@@ -28,18 +28,18 @@ namespace TestCase
 
         void TestWrite()
         {
-            PlayerPrefsHandler.WriteValue("_i", _i);
-            PlayerPrefsHandler.WriteValue("_b", _b);
-            PlayerPrefsHandler.WriteValue("_s", _s);
-            PlayerPrefsHandler.WriteValue("_f", _f);
+            Archive.WriteValue("_i", _i);
+            Archive.WriteValue("_b", _b);
+            Archive.WriteValue("_s", _s);
+            Archive.WriteValue("_f", _f);
         }
 
         void TestLoad()
         {
-            Debug.Log(PlayerPrefsHandler.ReadValue<int>("_i"));
-            Debug.Log(PlayerPrefsHandler.ReadValue<string>("_s"));
-            Debug.Log(PlayerPrefsHandler.ReadValue<float>("_f"));
-            Debug.Log(PlayerPrefsHandler.ReadValue<bool>("_b"));
+            Debug.Log(Archive.ReadValue<int>("_i"));
+            Debug.Log(Archive.ReadValue<string>("_s"));
+            Debug.Log(Archive.ReadValue<float>("_f"));
+            Debug.Log(Archive.ReadValue<bool>("_b"));
         }
 
     }

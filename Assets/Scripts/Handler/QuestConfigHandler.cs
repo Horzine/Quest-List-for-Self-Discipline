@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using Framework;
+using Newtonsoft.Json.Linq;
 using UnityEngine;
 
 /*
@@ -10,22 +12,19 @@ using UnityEngine;
 */
 namespace Handler
 {
-    public class ConfigHandler
+    public class QuestConfigHandler
     {
+        const string ConfigKeyName = "quests";
 
-        public void Init()
+        public string LoadConfig()
         {
-
+            return Archive.ReadValue<string>(ConfigKeyName);
         }
 
-        public void LoadConfig()
+        public void SaveConfig(string config)
         {
-
+            Archive.WriteValue(ConfigKeyName, config);
         }
 
-        public void SaveConfig()
-        {
-
-        }
     }
 }

@@ -1,9 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
 using Cache;
 using DataStructure;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using UnityEngine;
 
 /*
@@ -55,7 +53,7 @@ namespace TestCase
             cache.AddObserver(ob_1);
             cache.AddObserver(ob_2);
             cache.AddObserver(ob_3);
-            cache.Reload(JArray.Parse(json));
+            cache.Reload(json);
 
             cache.AccomplishQuest("");
             cache.AccomplishQuest("q_1");
