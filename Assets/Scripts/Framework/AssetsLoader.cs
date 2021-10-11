@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /*
@@ -12,7 +10,9 @@ namespace Framework
 {
     public class AssetsLoader
     {
-
-
+        public static GameObject LoadGameObject(string path)
+        {
+            return Resources.Load<GameObject>(path);
+        }
     }
 }
