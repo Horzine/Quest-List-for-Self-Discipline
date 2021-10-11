@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using DataStructure;
+using Handler;
 using Newtonsoft.Json;
 
 /*
@@ -21,21 +22,27 @@ namespace Cache
     {
         private Dictionary<string, Quest> _allQuests = new Dictionary<string, Quest>();
         private List<IQuestCacheObserver> _observers = new List<IQuestCacheObserver>();
+        private QuestConfigHandler _configHandler;
 
-        public void Init()
+        public QuestCache(QuestConfigHandler confighandler)
         {
-
+            _configHandler = confighandler;
         }
 
-        public void Reload(string quests)
+        public void Reload()
         {
+            string quests = _configHandler.LoadConfig();
             _allQuests.Clear();
-            var questList = JsonConvert.DeserializeObject<List<Quest>>(quests);
-            foreach (var item in questList)
+
+            if (quests != null)
             {
-                if (item != null)
+                var questList = JsonConvert.DeserializeObject<List<Quest>>(quests);
+                foreach (var item in questList)
                 {
-                    _allQuests.Add(item.Id, item);
+                    if (item != null)
+                    {
+                        _allQuests.Add(item.Id, item);
+                    }
                 }
             }
 

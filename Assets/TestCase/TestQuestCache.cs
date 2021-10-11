@@ -46,20 +46,20 @@ namespace TestCase
                 new Quest("q_4", "qdes_4", 1, false)
             };
             string json = JsonConvert.SerializeObject(list);
-            var cache = new QuestCache();
-            var ob_1 = new TestQuestCacheObserver("ob_1");
-            var ob_2 = new TestQuestCacheObserver("ob_2");
-            var ob_3 = new TestQuestCacheObserver("ob_3");
-            cache.AddObserver(ob_1);
-            cache.AddObserver(ob_2);
-            cache.AddObserver(ob_3);
-            cache.Reload(json);
-
-            cache.AccomplishQuest("");
-            cache.AccomplishQuest("q_1");
-
-            cache.RemoveObserver(ob_2);
-            cache.RestoreQuest("q_1");
+            // var cache = new QuestCache();
+            // var ob_1 = new TestQuestCacheObserver("ob_1");
+            // var ob_2 = new TestQuestCacheObserver("ob_2");
+            // var ob_3 = new TestQuestCacheObserver("ob_3");
+            // cache.AddObserver(ob_1);
+            // cache.AddObserver(ob_2);
+            // cache.AddObserver(ob_3);
+            // cache.Reload(json);
+            // 
+            // cache.AccomplishQuest("");
+            // cache.AccomplishQuest("q_1");
+            // 
+            // cache.RemoveObserver(ob_2);
+            // cache.RestoreQuest("q_1");
         }
     }
 }

@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cache;
+using Handler;
 using UnityEngine;
+using Views;
 
 /*
   ┎━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┒
@@ -13,6 +16,8 @@ namespace Framework
     public class GameInitializer : MonoBehaviour
     {
         public static GameInitializer Instance { get; private set; }
+        private QuestCache _questCache;
+        private RectTransform _canvas;
 
         private void Awake()
         {
@@ -27,11 +32,28 @@ namespace Framework
                 Destroy(gameObject);
                 return;
             }
+
+            _canvas = GameObject.Find("Canvas").GetComponent<RectTransform>();
         }
 
-        private void LoadGame()
+        private void Start()
         {
+            LoadData();
 
+            LoadMainView();
+        }
+
+        private void LoadData()
+        {
+            var questConfigHandler = new QuestConfigHandler();
+            _questCache = new QuestCache(questConfigHandler);
+        }
+
+        private void LoadMainView()
+        {
+            var prefab = AssetsLoader.GetInstance().LoadGameObject("Assets/Resources/Views/MainView.prefab");
+            var view = Instantiate(prefab, _canvas).GetComponent<MainView>();
+            view.Init(_questCache);
         }
     }
 }

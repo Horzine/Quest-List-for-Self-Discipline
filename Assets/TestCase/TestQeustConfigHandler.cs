@@ -29,8 +29,8 @@ namespace TestCase
             var handler = new QuestConfigHandler();
             handler.SaveConfig(config);
 
-            var cache = new QuestCache();
-            cache.Reload(handler.LoadConfig());
+            var cache = new QuestCache(handler);
+            cache.Reload();
 
             Debug.Log(cache.GetQuest("q_1").Description);
         }
