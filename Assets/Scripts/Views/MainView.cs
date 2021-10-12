@@ -65,5 +65,9 @@ namespace Views
         public void OnCacheReloaded() { }
 
         public void OnRestoreQuest(Quest quest) { }
+
+        public void OnAddQuest(Quest quest) { }
+
+        public void OnRemoveQuest(Quest quest) { }
     }
 }

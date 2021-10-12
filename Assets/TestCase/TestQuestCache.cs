@@ -24,9 +24,19 @@ namespace TestCase
             Debug.Log($"{_name} OnAccomplishQuest {quest.Id}");
         }
 
+        public void OnAddQuest(Quest quest)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public void OnCacheReloaded()
         {
             Debug.Log($"{_name} OnCacheReloaded");
+        }
+
+        public void OnRemoveQuest(Quest quest)
+        {
+            throw new System.NotImplementedException();
         }
 
         public void OnRestoreQuest(Quest quest)

@@ -17,6 +17,8 @@ namespace Cache
         void OnCacheReloaded();
         void OnAccomplishQuest(Quest quest);
         void OnRestoreQuest(Quest quest);
+        void OnAddQuest(Quest quest);
+        void OnRemoveQuest(Quest quest);
     }
     public class QuestCache
     {
@@ -52,6 +54,16 @@ namespace Cache
         public Quest GetQuest(string questId)
         {
             return _allQuests.ContainsKey(questId) ? _allQuests[questId] : null;
+        }
+
+        public void AddQuest()
+        {
+
+        }
+
+        public void RemoveQeust()
+        {
+
         }
 
         public void AccomplishQuest(string questId)
