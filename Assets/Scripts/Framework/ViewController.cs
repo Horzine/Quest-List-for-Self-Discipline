@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /*
@@ -26,10 +24,8 @@ namespace Framework
             TryGetComponent(out _canvasGroup);
         }
 
-        protected void PresentViewController(ViewController vc, Action closeCallback)
+        protected void PresentViewController(ViewController vc, Action vcCloseCallback)
         {
-            _closeCallback = closeCallback;
-
             if (PresentedVc == null)
             {
                 PresentedVc = vc;
@@ -42,6 +38,7 @@ namespace Framework
                 vcRtf.offsetMin = Vector2.zero;
                 vcRtf.offsetMax = Vector2.zero;
 
+                vc._closeCallback = vcCloseCallback;
                 vc.SetParent(this);
                 vc.OnPresent();
             }
@@ -61,10 +58,9 @@ namespace Framework
                 PresentedVc.DismissPresentedViewController();
             }
 
-            PresentedVc = null;
             PresentedVc.SetParent(null);
-
             PresentedVc.OnDismiss();
+            PresentedVc = null;
         }
 
         private void SetParent(ViewController vc)
@@ -93,6 +89,13 @@ namespace Framework
         protected virtual void OnDismiss()
         {
             SetViewInteractive(false);
+
+            DestroySelf();
+        }
+
+        private void DestroySelf()
+        {
+            Destroy(gameObject);
         }
     }
 }
