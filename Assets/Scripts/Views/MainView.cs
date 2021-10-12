@@ -4,6 +4,7 @@ using Framework;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Views.AddQuset;
 using Views.QuestList;
 
 /*
@@ -15,7 +16,7 @@ using Views.QuestList;
 namespace Views
 {
     public interface IMainViewProtocol { }
-    public class MainView : MonoBehaviour, IMainViewProtocol, IQuestCacheObserver
+    public class MainView : ViewController, IMainViewProtocol, IQuestCacheObserver
     {
         [SerializeField] private TextMeshProUGUI _motto_txt;
         [SerializeField] private Button _addQuest_btn;
@@ -49,7 +50,10 @@ namespace Views
 
         private void OnClickAddQuestBtn()
         {
-
+            var prefab = AssetsLoader.GetInstance().LoadGameObject("Assets/Resources/Views/add_quest_view.prefab");
+            var view = Instantiate(prefab).GetComponent<AddQuestView>();
+            view.Init(_questCache);
+            PresentViewController(view, DismissPresentedViewController);
         }
 
         private void LoadQuestListView()

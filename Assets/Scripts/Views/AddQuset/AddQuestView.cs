@@ -1,6 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
+using Cache;
+using Framework;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 /*
   ┎━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┒
@@ -10,9 +12,35 @@ using UnityEngine;
 */
 namespace Views.AddQuset
 {
-    public class AddQuestView : MonoBehaviour
+    public class AddQuestView : ViewController
     {
-        
+        [SerializeField] private Button _create_btn;
+        [SerializeField] private TextMeshProUGUI _create_txt;
+        [SerializeField] private Button _close_btn;
+        [SerializeField] private TextMeshProUGUI _close_txt;
 
+        private QuestCache _questCache;
+
+        public void Init(QuestCache questCache)
+        {
+            _questCache = questCache;
+
+            _create_btn.onClick.AddListener(OnClickCreateBtn);
+            _create_txt.text = "Create";
+
+            _close_btn.onClick.AddListener(OnClickCloseBtn);
+            _close_txt.text = "Close";
+        }
+
+        private void OnClickCreateBtn()
+        {
+            _questCache.AddQuest();
+            Close();
+        }
+
+        private void OnClickCloseBtn()
+        {
+            Close();
+        }
     }
 }
