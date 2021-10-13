@@ -45,6 +45,7 @@ namespace Framework
         {
             var questConfigHandler = new QuestConfigHandler();
             _questCache = new QuestCache(questConfigHandler);
+            _questCache.Reload();
         }
 
         private void LoadMainView()

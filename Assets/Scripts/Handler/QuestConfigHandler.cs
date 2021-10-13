@@ -18,7 +18,7 @@ namespace Handler
 
         public string LoadConfig()
         {
-            return Archive.ReadValue<string>(ConfigKeyName);
+            return Archive.HasKey(ConfigKeyName) ? Archive.ReadValue<string>(ConfigKeyName) : null;
         }
 
         public void SaveConfig(string config)

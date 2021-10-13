@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using DataStructure;
+using Framework;
 using Handler;
 using Newtonsoft.Json;
 
@@ -22,6 +24,8 @@ namespace Cache
     }
     public class QuestCache
     {
+        const string AccumulateCreateCountKeyName = "accumulate_create_count";
+
         private Dictionary<string, Quest> _allQuests = new Dictionary<string, Quest>();
         private List<IQuestCacheObserver> _observers = new List<IQuestCacheObserver>();
         private QuestConfigHandler _configHandler;
@@ -56,9 +60,25 @@ namespace Cache
             return _allQuests.ContainsKey(questId) ? _allQuests[questId] : null;
         }
 
-        public void AddQuest()
+        public void AddQuest(string description, int rewardPoint)
         {
+            var (nextId, currentAcumulateCreateCount) = GetNextCreateQuestId();
+            var quest = new Quest(nextId, description, rewardPoint);
+            _allQuests.Add(nextId, quest);
 
+            var questList = _allQuests.Values.ToList();
+            _configHandler.SaveConfig(JsonConvert.SerializeObject(questList));
+
+            Archive.WriteValue(AccumulateCreateCountKeyName, ++currentAcumulateCreateCount);
+
+            NotifyObserver((observer) => observer.OnAddQuest(quest));
+        }
+
+        public (string nextId, int currentAcumulateCreateCount) GetNextCreateQuestId()
+        {
+            int accumulateCreateCount = Archive.HasKey(AccumulateCreateCountKeyName) ?
+                Archive.ReadValue<int>(AccumulateCreateCountKeyName) : 0;
+            return ($"quest_{accumulateCreateCount + 1}", accumulateCreateCount);
         }
 
         public void RemoveQeust()

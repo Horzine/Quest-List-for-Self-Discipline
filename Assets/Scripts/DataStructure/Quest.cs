@@ -10,7 +10,7 @@ namespace DataStructure
 {
     public class Quest
     {
-        public Quest(string id, string description, int rewardPoint, bool accomplish)
+        public Quest(string id, string description, int rewardPoint, bool accomplish = false)
         {
             Id = id;
             Description = description;
