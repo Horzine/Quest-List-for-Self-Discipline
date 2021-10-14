@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using DataStructure;
+using Framework;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -28,6 +29,9 @@ namespace Views.QuestList
         {
             _quest = quest;
             _clickAccomplishBtn = clickAccomplishBtn;
+
+            var eventListener = EventTriggerListener.Get(gameObject);
+            eventListener._onPointerDown += (go, eventData) => Debug.Log("Point Down");
 
             _accomplish_btn.onClick.AddListener(OnClickAccomplishBtn);
 

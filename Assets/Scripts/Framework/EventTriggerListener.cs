@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -13,20 +12,24 @@ namespace Framework
 {
     public class EventTriggerListener : EventTrigger
     {
-        public delegate void VoidDelegate(GameObject go);
-        public delegate void BoolDelegate(GameObject go, bool state);
-        public delegate void FloatDelegate(GameObject go, float delta);
-        public delegate void VectorDelegate(GameObject go, Vector2 delta);
-        public delegate void ObjectDelegate(GameObject go, GameObject obj);
-        public delegate void KeyCodeDelegate(GameObject go, KeyCode key);
+        public event Action<GameObject, PointerEventData> _onPointerClick;
+        public event Action<GameObject, PointerEventData> _onPointerDown;
+        public event Action<GameObject, PointerEventData> _onPointerEnter;
+        public event Action<GameObject, PointerEventData> _onPointerExit;
+        public event Action<GameObject, PointerEventData> _onPointerUp;
+        public event Action<GameObject, PointerEventData> _onBeginDrag;
+        public event Action<GameObject, PointerEventData> _onDrag;
+        public event Action<GameObject, PointerEventData> _onDrop;
+        public event Action<GameObject, PointerEventData> _onEndDrag;
+        public event Action<GameObject, PointerEventData> _onInitializePotentialDrag;
+        public event Action<GameObject, PointerEventData> _onScroll;
+        public event Action<GameObject, BaseEventData> _onSelect;
+        public event Action<GameObject, BaseEventData> _onUpdateSelected;
+        public event Action<GameObject, BaseEventData> _onCancel;
+        public event Action<GameObject, BaseEventData> _onDeselect;
+        public event Action<GameObject, BaseEventData> _onSubmit;
+        public event Action<GameObject, AxisEventData> _onMove;
 
-        public VoidDelegate onClick;
-        public VoidDelegate onDown;
-        public VoidDelegate onEnter;
-        public VoidDelegate onExit;
-        public VoidDelegate onUp;
-        public VoidDelegate onSelect;
-        public VoidDelegate onUpdateSelect;
 
         static public EventTriggerListener Get(GameObject go)
         {
@@ -46,32 +49,71 @@ namespace Framework
 
         public override void OnPointerClick(PointerEventData eventData)
         {
-            onClick?.Invoke(gameObject);
+            _onPointerClick?.Invoke(gameObject, eventData);
         }
         public override void OnPointerDown(PointerEventData eventData)
         {
-            onDown?.Invoke(gameObject);
+            _onPointerDown?.Invoke(gameObject, eventData);
         }
         public override void OnPointerEnter(PointerEventData eventData)
         {
-            onEnter?.Invoke(gameObject);
+            _onPointerEnter?.Invoke(gameObject, eventData);
         }
         public override void OnPointerExit(PointerEventData eventData)
         {
-            onExit?.Invoke(gameObject);
+            _onPointerExit?.Invoke(gameObject, eventData);
         }
         public override void OnPointerUp(PointerEventData eventData)
         {
-            onUp?.Invoke(gameObject);
+            _onPointerUp?.Invoke(gameObject, eventData);
+        }
+        public override void OnBeginDrag(PointerEventData eventData)
+        {
+            _onBeginDrag?.Invoke(gameObject, eventData);
+        }
+        public override void OnDrag(PointerEventData eventData)
+        {
+            _onDrag?.Invoke(gameObject, eventData);
+        }
+        public override void OnDrop(PointerEventData eventData)
+        {
+            _onDrop?.Invoke(gameObject, eventData);
+        }
+        public override void OnEndDrag(PointerEventData eventData)
+        {
+            _onEndDrag?.Invoke(gameObject, eventData);
+        }
+        public override void OnInitializePotentialDrag(PointerEventData eventData)
+        {
+            _onInitializePotentialDrag?.Invoke(gameObject, eventData);
+        }
+        public override void OnScroll(PointerEventData eventData)
+        {
+            _onScroll?.Invoke(gameObject, eventData);
         }
         public override void OnSelect(BaseEventData eventData)
         {
-            onSelect?.Invoke(gameObject);
+            _onSelect?.Invoke(gameObject, eventData);
         }
         public override void OnUpdateSelected(BaseEventData eventData)
         {
-            onUpdateSelect?.Invoke(gameObject);
+            _onUpdateSelected?.Invoke(gameObject, eventData);
         }
-
+        public override void OnCancel(BaseEventData eventData)
+        {
+            _onCancel?.Invoke(gameObject, eventData);
+        }
+        public override void OnDeselect(BaseEventData eventData)
+        {
+            _onDeselect?.Invoke(gameObject, eventData);
+        }
+        public override void OnSubmit(BaseEventData eventData)
+        {
+            _onSubmit?.Invoke(gameObject, eventData);
+        }
+        public override void OnMove(AxisEventData eventData)
+        {
+            _onMove?.Invoke(gameObject, eventData);
+        }
     }
 }
