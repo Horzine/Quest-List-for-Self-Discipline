@@ -43,7 +43,7 @@ namespace Views.QuestList
         private void CreateEntryView(Quest quest)
         {
             var view = Instantiate(_entryPrefab, _content).GetComponent<QuestEntryView>();
-            view.Init(_questCache, quest);
+            view.Init(_questCache, quest, OnClickAccomplish);
             _entryViews.Add(view);
         }
 
@@ -57,18 +57,38 @@ namespace Views.QuestList
             }
         }
 
+        private void OnClickAccomplish(Quest quest)
+        {
+            if (!quest.Accomplish)
+            {
+                _questCache.AccomplishQuest(quest.Id);
+            }
+            else
+            {
+                _questCache.RestoreQuest(quest.Id);
+            }
+        }
+
         // Interface APIs
-        public void OnAccomplishQuest(Quest quest) { }
+        public void OnAccomplishQuest(Quest quest)
+        {
+            SortEntry();
+        }
 
         public void OnAddQuest(Quest quest)
         {
             CreateEntryView(quest);
+
+            SortEntry();
         }
 
         public void OnCacheReloaded() { }
 
         public void OnRemoveQuest(Quest quest) { }
 
-        public void OnRestoreQuest(Quest quest) { }
+        public void OnRestoreQuest(Quest quest)
+        {
+            SortEntry();
+        }
     }
 }

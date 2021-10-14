@@ -18,24 +18,38 @@ namespace Views.QuestList
     {
         [SerializeField] private Text _description_txt;
         [SerializeField] private TextMeshProUGUI _rewardPoint_txt;
+        [SerializeField] private Button _accomplish_btn;
+        [SerializeField] private Button _operation_btn;
 
+        private Action<Quest> _clickAccomplishBtn;
         private Quest _quest;
 
-        public void Init(Cache.QuestCache questCache, Quest quest)
+        public void Init(Cache.QuestCache questCache, Quest quest, Action<Quest> clickAccomplishBtn)
         {
             _quest = quest;
+            _clickAccomplishBtn = clickAccomplishBtn;
+
+            _accomplish_btn.onClick.AddListener(OnClickAccomplishBtn);
 
             SetupView();
         }
 
-        public void SetupView()
+        private void SetupView()
         {
             _rewardPoint_txt.text = $"{_quest.RewardPoint} RMB";
         }
 
         public int CompareTo(QuestEntryView other)
         {
-            return _quest.CompareTo(other.GetQuest());
+            var otherQuest = other.GetQuest();
+            if (_quest.Accomplish != otherQuest.Accomplish)
+            {
+                return _quest.Accomplish.CompareTo(otherQuest.Accomplish);
+            }
+            else
+            {
+                return _quest.CompareTo(other.GetQuest());
+            }
         }
 
         public Quest GetQuest()
@@ -43,5 +57,14 @@ namespace Views.QuestList
             return _quest;
         }
 
+        private void OnClickAccomplishBtn()
+        {
+            _clickAccomplishBtn?.Invoke(_quest);
+        }
+
+        private void OnOperationBtnDown()
+        {
+
+        }
     }
 }

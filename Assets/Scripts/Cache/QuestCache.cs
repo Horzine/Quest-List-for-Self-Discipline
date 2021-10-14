@@ -70,11 +70,10 @@ namespace Cache
         public void AddQuest(string description, int rewardPoint)
         {
             var (nextId, currentAcumulateCreateCount) = GetNextCreateQuestId();
-            var quest = new Quest(nextId, description, currentAcumulateCreateCount, rewardPoint);
+            var quest = new Quest(nextId, description, currentAcumulateCreateCount * 10, rewardPoint);
             _allQuests.Add(nextId, quest);
 
-            var questList = _allQuests.Values.ToList();
-            _configHandler.SaveConfig(JsonConvert.SerializeObject(questList));
+            SaveAllQuestArchive();
 
             Archive.WriteValue(AccumulateCreateCountKeyName, currentAcumulateCreateCount + 1);
 
@@ -96,23 +95,23 @@ namespace Cache
         public void AccomplishQuest(string questId)
         {
             var quest = GetQuest(questId);
-            if (quest != null)
-            {
-                quest.Accomplish = true;
 
-                NotifyObserver((observer) => observer.OnAccomplishQuest(quest));
-            }
+            quest.Accomplish = true;
+
+            SaveAllQuestArchive();
+
+            NotifyObserver((observer) => observer.OnAccomplishQuest(quest));
         }
 
         public void RestoreQuest(string questId)
         {
             var quest = GetQuest(questId);
-            if (quest != null)
-            {
-                quest.Accomplish = false;
 
-                NotifyObserver((observer) => observer.OnRestoreQuest(quest));
-            }
+            quest.Accomplish = false;
+
+            SaveAllQuestArchive();
+
+            NotifyObserver((observer) => observer.OnRestoreQuest(quest));
         }
 
         private void NotifyObserver(Action<IQuestCacheObserver> action)
@@ -132,6 +131,12 @@ namespace Cache
         public void RemoveObserver(IQuestCacheObserver observer)
         {
             _observers.Remove(observer);
+        }
+
+        private void SaveAllQuestArchive()
+        {
+            var questList = _allQuests.Values.ToList();
+            _configHandler.SaveConfig(JsonConvert.SerializeObject(questList));
         }
     }
 }
