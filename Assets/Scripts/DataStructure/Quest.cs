@@ -1,3 +1,4 @@
+using System;
 using Newtonsoft.Json;
 
 /*
@@ -8,13 +9,14 @@ using Newtonsoft.Json;
 */
 namespace DataStructure
 {
-    public class Quest
+    public class Quest : IComparable<Quest>
     {
-        public Quest(string id, string description, int rewardPoint, bool accomplish = false)
+        public Quest(string id, string description, int rewardPoint, int sortOrder, bool accomplish = false)
         {
             Id = id;
             Description = description;
             RewardPoint = rewardPoint;
+            SortOrder = sortOrder;
             Accomplish = accomplish;
         }
 
@@ -30,9 +32,17 @@ namespace DataStructure
         [JsonProperty(PropertyName = "accomplish")]
         public bool Accomplish { get; set; }
 
+        [JsonProperty(PropertyName = "sort_order")]
+        public int SortOrder { get; set; }
+
+        public int CompareTo(Quest other)
+        {
+            return SortOrder.CompareTo(other.SortOrder);
+        }
+
         public override string ToString()
         {
-            return $"[Task]: Id = {Id}, Description = {Description}, RewardPoint = {RewardPoint}, Accomplish = {Accomplish}";
+            return $"[Task]: Id = {Id}, Description = {Description}, RewardPoint = {RewardPoint}, Accomplish = {Accomplish}, SortOrder = {SortOrder}";
         }
     }
 }

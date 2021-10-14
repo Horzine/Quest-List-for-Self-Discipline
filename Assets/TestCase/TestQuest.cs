@@ -14,7 +14,7 @@ namespace TestCase
     {
         private void Start()
         {
-            var quest = new Quest("q_id", "q_des", 10, false);
+            var quest = new Quest("q_id", "q_des", 10, 1, false);
             Debug.Log(quest);
 
             string json = JsonConvert.SerializeObject(quest, Formatting.Indented);

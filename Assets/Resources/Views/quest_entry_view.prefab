@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8989552618470385616}
   - component: {fileID: 7854063103350825902}
   - component: {fileID: 3773416091410163692}
+  - component: {fileID: 8183500164126759862}
   m_Layer: 5
   m_Name: quest_entry_view
   m_TagString: Untagged
@@ -121,6 +122,20 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &8183500164126759862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1406452242243216591}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24f3f472494ea51468588ce70bad88d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _description_txt: {fileID: 0}
+  _rewardPoint_txt: {fileID: 6228664984869550445}
 --- !u!1 &2815161551402757946
 GameObject:
   m_ObjectHideFlags: 0

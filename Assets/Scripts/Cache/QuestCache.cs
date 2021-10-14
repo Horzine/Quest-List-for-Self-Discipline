@@ -26,8 +26,8 @@ namespace Cache
     {
         const string AccumulateCreateCountKeyName = "accumulate_create_count";
 
-        private Dictionary<string, Quest> _allQuests = new Dictionary<string, Quest>();
-        private List<IQuestCacheObserver> _observers = new List<IQuestCacheObserver>();
+        private readonly Dictionary<string, Quest> _allQuests = new Dictionary<string, Quest>();
+        private readonly List<IQuestCacheObserver> _observers = new List<IQuestCacheObserver>();
         private QuestConfigHandler _configHandler;
 
         public QuestCache(QuestConfigHandler confighandler)
@@ -60,16 +60,23 @@ namespace Cache
             return _allQuests.ContainsKey(questId) ? _allQuests[questId] : null;
         }
 
+        public List<Quest> GetAllQuest()
+        {
+            var quests = _allQuests.Values.ToList();
+            quests.Sort();
+            return quests;
+        }
+
         public void AddQuest(string description, int rewardPoint)
         {
             var (nextId, currentAcumulateCreateCount) = GetNextCreateQuestId();
-            var quest = new Quest(nextId, description, rewardPoint);
+            var quest = new Quest(nextId, description, currentAcumulateCreateCount, rewardPoint);
             _allQuests.Add(nextId, quest);
 
             var questList = _allQuests.Values.ToList();
             _configHandler.SaveConfig(JsonConvert.SerializeObject(questList));
 
-            Archive.WriteValue(AccumulateCreateCountKeyName, ++currentAcumulateCreateCount);
+            Archive.WriteValue(AccumulateCreateCountKeyName, currentAcumulateCreateCount + 1);
 
             NotifyObserver((observer) => observer.OnAddQuest(quest));
         }
@@ -78,7 +85,7 @@ namespace Cache
         {
             int accumulateCreateCount = Archive.HasKey(AccumulateCreateCountKeyName) ?
                 Archive.ReadValue<int>(AccumulateCreateCountKeyName) : 0;
-            return ($"quest_{accumulateCreateCount + 1}", accumulateCreateCount);
+            return ($"quest_{accumulateCreateCount}", accumulateCreateCount);
         }
 
         public void RemoveQeust()

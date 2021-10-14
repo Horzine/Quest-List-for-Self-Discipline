@@ -60,7 +60,7 @@ namespace Views
         {
             var prefab = AssetsLoader.GetInstance().LoadGameObject("Assets/Resources/Views/quest_list_sv.prefab");
             _questListView = Instantiate(prefab, GetComponent<RectTransform>()).GetComponent<QuestListView>();
-            _questListView.Init();
+            _questListView.Init(_questCache, _questCache.GetAllQuest());
         }
 
         // Interface APIs

@@ -50,10 +50,10 @@ namespace TestCase
         {
             var list = new List<Quest>
             {
-                new Quest("q_1", "qdes_1", 1, false),
-                new Quest("q_2", "qdes_2", 1, false),
-                new Quest("q_3", "qdes_3", 1, false),
-                new Quest("q_4", "qdes_4", 1, false)
+                new Quest("q_1", "qdes_1", 1, 1, false),
+                new Quest("q_2", "qdes_2", 1, 1, false),
+                new Quest("q_3", "qdes_3", 1, 1, false),
+                new Quest("q_4", "qdes_4", 1, 1, false)
             };
             string json = JsonConvert.SerializeObject(list);
             // var cache = new QuestCache();
