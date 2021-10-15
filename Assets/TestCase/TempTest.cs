@@ -18,7 +18,16 @@ namespace TestCase
         {
             var result = JsonConvert.DeserializeObject<List<Quest>>(null);
             // Debug.Log(result.Count); //null;
+
+            var cor = StartCoroutine(TestCoroutine());
+            cor = null;
+            StopCoroutine(cor);
         }
 
+
+        public IEnumerator TestCoroutine()
+        {
+            yield break;
+        }
     }
 }

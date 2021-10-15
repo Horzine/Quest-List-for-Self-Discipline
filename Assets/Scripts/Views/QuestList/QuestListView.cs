@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using Cache;
 using DataStructure;
@@ -43,7 +42,7 @@ namespace Views.QuestList
         private void CreateEntryView(Quest quest)
         {
             var view = Instantiate(_entryPrefab, _content).GetComponent<QuestEntryView>();
-            view.Init(_questCache, quest, OnClickAccomplish);
+            view.Init(_questCache, quest, OnClickAccomplish, OnLongPressedEntry);
             _entryViews.Add(view);
         }
 
@@ -67,6 +66,11 @@ namespace Views.QuestList
             {
                 _questCache.RestoreQuest(quest.Id);
             }
+        }
+
+        private void OnLongPressedEntry()
+        {
+            Debug.Log("Long Pressed");
         }
 
         // Interface APIs
