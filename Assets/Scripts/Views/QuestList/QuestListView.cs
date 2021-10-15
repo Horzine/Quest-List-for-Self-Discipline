@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Cache;
 using DataStructure;
@@ -14,16 +15,19 @@ namespace Views.QuestList
 {
     public class QuestListView : MonoBehaviour, IQuestCacheObserver
     {
+        [SerializeField] private RectTransform _viewPort;
         [SerializeField] private RectTransform _content;
 
         private GameObject _entryPrefab;
         private QuestCache _questCache;
         private List<QuestEntryView> _entryViews = new List<QuestEntryView>();
+        private IMainViewProtocol _mainView;
 
-        public void Init(QuestCache questCache, List<Quest> quests)
+        public void Init(QuestCache questCache, List<Quest> quests, IMainViewProtocol mainView)
         {
             _questCache = questCache;
             _questCache.AddObserver(this);
+            _mainView = mainView;
 
             _entryPrefab = AssetsLoader.GetInstance().LoadGameObject("Assets/Resources/Views/quest_entry_view.prefab");
             foreach (var item in quests)
@@ -56,8 +60,9 @@ namespace Views.QuestList
             }
         }
 
-        private void OnClickAccomplish(Quest quest)
+        private void OnClickAccomplish(string questId)
         {
+            var quest = _questCache.GetQuest(questId);
             if (!quest.Accomplish)
             {
                 _questCache.AccomplishQuest(quest.Id);
@@ -68,9 +73,9 @@ namespace Views.QuestList
             }
         }
 
-        private void OnLongPressedEntry()
+        private void OnLongPressedEntry(string questId, RectTransform entryRtf)
         {
-            Debug.Log("Long Pressed");
+            _mainView.ShowEntryOperationView(questId, entryRtf);
         }
 
         private void RefreshEntryByQuestId(string questId)
@@ -87,6 +92,11 @@ namespace Views.QuestList
 
             if (view != null)
                 view.RefreshView();
+        }
+
+        public Rect GetViewPortRect()
+        {
+            return _viewPort.rect;
         }
 
         // Interface APIs
@@ -114,5 +124,6 @@ namespace Views.QuestList
 
             SortEntry();
         }
+
     }
 }

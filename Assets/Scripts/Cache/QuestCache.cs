@@ -28,7 +28,7 @@ namespace Cache
 
         private readonly Dictionary<string, Quest> _allQuests = new Dictionary<string, Quest>();
         private readonly List<IQuestCacheObserver> _observers = new List<IQuestCacheObserver>();
-        private QuestConfigHandler _configHandler;
+        private readonly QuestConfigHandler _configHandler;
 
         public QuestCache(QuestConfigHandler confighandler)
         {
@@ -72,11 +72,8 @@ namespace Cache
             var (nextId, currentAcumulateCreateCount) = GetNextCreateQuestId();
             var quest = new Quest(nextId, description, currentAcumulateCreateCount * 10, rewardPoint);
             _allQuests.Add(nextId, quest);
-
             SaveAllQuestArchive();
-
             Archive.WriteValue(AccumulateCreateCountKeyName, currentAcumulateCreateCount + 1);
-
             NotifyObserver((observer) => observer.OnAddQuest(quest));
         }
 
@@ -87,30 +84,27 @@ namespace Cache
             return ($"quest_{accumulateCreateCount}", accumulateCreateCount);
         }
 
-        public void RemoveQeust()
+        public void RemoveQeust(string questId)
         {
-
+            var quest = GetQuest(questId);
+            _allQuests.Remove(questId);
+            SaveAllQuestArchive();
+            NotifyObserver((observer) => observer.OnRemoveQuest(quest));
         }
 
         public void AccomplishQuest(string questId)
         {
             var quest = GetQuest(questId);
-
             quest.Accomplish = true;
-
             SaveAllQuestArchive();
-
             NotifyObserver((observer) => observer.OnAccomplishQuest(quest));
         }
 
         public void RestoreQuest(string questId)
         {
             var quest = GetQuest(questId);
-
             quest.Accomplish = false;
-
             SaveAllQuestArchive();
-
             NotifyObserver((observer) => observer.OnRestoreQuest(quest));
         }
 

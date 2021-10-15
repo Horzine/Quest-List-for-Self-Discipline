@@ -26,8 +26,8 @@ namespace Views.QuestList
         [SerializeField] private TextMeshProUGUI _rewardPoint_txt;
         [SerializeField] private Button _accomplish_btn;
 
-        private Action<Quest> _clickAccomplishBtn;
-        private Action _longPressedEntry;
+        private Action<string> _clickAccomplishBtn;
+        private Action<string, RectTransform> _longPressedEntry;
         private Quest _quest;
         private QuestEntryState _state = QuestEntryState.NullState;
         private Coroutine _longPressedTimerCoroutine;
@@ -39,7 +39,7 @@ namespace Views.QuestList
             Accomplish = 2,
         }
 
-        public void Init(Quest quest, Action<Quest> clickAccomplishBtn, Action longPressedEntry)
+        public void Init(Quest quest, Action<string> clickAccomplishBtn, Action<string, RectTransform> longPressedEntry)
         {
             _quest = quest;
             _clickAccomplishBtn = clickAccomplishBtn;
@@ -105,7 +105,7 @@ namespace Views.QuestList
 
         private void OnClickAccomplishBtn()
         {
-            _clickAccomplishBtn?.Invoke(_quest);
+            _clickAccomplishBtn?.Invoke(_quest.Id);
         }
 
         private void OnEntryPointerDown()
@@ -136,7 +136,7 @@ namespace Views.QuestList
                 timer += Time.deltaTime;
                 if (timer >= LongPressedActiveTime)
                 {
-                    _longPressedEntry?.Invoke();
+                    _longPressedEntry?.Invoke(_quest.Id, GetComponent<RectTransform>());
                     yield break;
                 }
             }

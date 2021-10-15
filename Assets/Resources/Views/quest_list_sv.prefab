@@ -166,7 +166,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ShowMaskGraphic: 0
+  m_ShowMaskGraphic: 1
 --- !u!1 &3400969589501293748
 GameObject:
   m_ObjectHideFlags: 0
@@ -525,4 +525,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffbfec5fe5fc3d446949de345cd49503, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _viewPort: {fileID: 5467420863350165061}
   _content: {fileID: 2831056393515248921}
