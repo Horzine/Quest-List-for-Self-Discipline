@@ -42,7 +42,7 @@ namespace Views.QuestList
         private void CreateEntryView(Quest quest)
         {
             var view = Instantiate(_entryPrefab, _content).GetComponent<QuestEntryView>();
-            view.Init(_questCache, quest, OnClickAccomplish, OnLongPressedEntry);
+            view.Init(quest, OnClickAccomplish, OnLongPressedEntry);
             _entryViews.Add(view);
         }
 
@@ -73,9 +73,27 @@ namespace Views.QuestList
             Debug.Log("Long Pressed");
         }
 
+        private void RefreshEntryByQuestId(string questId)
+        {
+            QuestEntryView view = null;
+            foreach (var item in _entryViews)
+            {
+                if (item.GetQuest().Id == questId)
+                {
+                    view = item;
+                    break;
+                }
+            }
+
+            if (view != null)
+                view.RefreshView();
+        }
+
         // Interface APIs
         public void OnAccomplishQuest(Quest quest)
         {
+            RefreshEntryByQuestId(quest.Id);
+
             SortEntry();
         }
 
@@ -92,6 +110,8 @@ namespace Views.QuestList
 
         public void OnRestoreQuest(Quest quest)
         {
+            RefreshEntryByQuestId(quest.Id);
+
             SortEntry();
         }
     }

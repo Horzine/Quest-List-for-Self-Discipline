@@ -18,6 +18,10 @@ namespace Views.QuestList
     {
         const float LongPressedActiveTime = 2;
 
+        [Header("Art Setting"), SerializeField] private Color _incompleteColor;
+        [SerializeField] private Color _accomplishColor;
+        [Space(30)]
+        [SerializeField] private Image _entryBackground_img;
         [SerializeField] private Text _description_txt;
         [SerializeField] private TextMeshProUGUI _rewardPoint_txt;
         [SerializeField] private Button _accomplish_btn;
@@ -26,7 +30,7 @@ namespace Views.QuestList
         private Action _longPressedEntry;
         private Quest _quest;
         private QuestEntryState _state = QuestEntryState.NullState;
-        private Coroutine _longPressedCoroutine;
+        private Coroutine _longPressedTimerCoroutine;
 
         enum QuestEntryState
         {
@@ -35,7 +39,7 @@ namespace Views.QuestList
             Accomplish = 2,
         }
 
-        public void Init(Cache.QuestCache questCache, Quest quest, Action<Quest> clickAccomplishBtn, Action longPressedEntry)
+        public void Init(Quest quest, Action<Quest> clickAccomplishBtn, Action longPressedEntry)
         {
             _quest = quest;
             _clickAccomplishBtn = clickAccomplishBtn;
@@ -59,6 +63,7 @@ namespace Views.QuestList
 
         private void SetupStaticView()
         {
+            _description_txt.text = _quest.Description;
             _rewardPoint_txt.text = $"{_quest.RewardPoint} RMB";
         }
 
@@ -77,10 +82,10 @@ namespace Views.QuestList
             switch (newState)
             {
                 case QuestEntryState.Incomplete:
-
+                    _entryBackground_img.color = _incompleteColor;
                     break;
                 case QuestEntryState.Accomplish:
-
+                    _entryBackground_img.color = _accomplishColor;
                     break;
                 case QuestEntryState.NullState:
                     Debug.LogError("Shouldn't switch to null state");
@@ -106,19 +111,19 @@ namespace Views.QuestList
         private void OnEntryPointerDown()
         {
             Debug.Log("On Entry Pointer Down");
-            if (_longPressedCoroutine == null)
+            if (_longPressedTimerCoroutine == null)
             {
-                _longPressedCoroutine = StartCoroutine(LongPressedTimer());
+                _longPressedTimerCoroutine = StartCoroutine(LongPressedTimer());
             }
         }
 
         private void OnEntryPointerUp()
         {
             Debug.Log("On Entry Pointer Up");
-            if (_longPressedCoroutine != null)
+            if (_longPressedTimerCoroutine != null)
             {
-                StopCoroutine(_longPressedCoroutine);
-                _longPressedCoroutine = null;
+                StopCoroutine(_longPressedTimerCoroutine);
+                _longPressedTimerCoroutine = null;
             }
         }
 
