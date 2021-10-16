@@ -35,6 +35,13 @@ namespace DataStructure
         [JsonProperty(PropertyName = "sort_order")]
         public int SortOrder { get; set; }
 
+        public void Update(string description, int rewardPoint, int sortOrder)
+        {
+            Description = description;
+            RewardPoint = rewardPoint;
+            SortOrder = sortOrder;
+        }
+
         public int CompareTo(Quest other)
         {
             return SortOrder.CompareTo(other.SortOrder);

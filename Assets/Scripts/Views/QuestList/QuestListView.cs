@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Cache;
 using DataStructure;
@@ -17,7 +16,6 @@ namespace Views.QuestList
     public class QuestListView : MonoBehaviour, IQuestCacheObserver
     {
         [SerializeField] private ScrollRect _scrollView;
-        [SerializeField] private RectTransform _viewPort;
         [SerializeField] private RectTransform _content;
 
         private GameObject _entryPrefab;
@@ -52,6 +50,16 @@ namespace Views.QuestList
             _entryViews.Add(view);
         }
 
+        private void RemoveEntryView(string questId)
+        {
+            var view = GetEntryByQuestId(questId);
+            if (view != null)
+            {
+                _entryViews.Remove(view);
+                Destroy(view.gameObject);
+            }
+        }
+
         private void SortEntry()
         {
             _entryViews.Sort();
@@ -82,23 +90,22 @@ namespace Views.QuestList
 
         private void RefreshEntryByQuestId(string questId)
         {
-            QuestEntryView view = null;
-            foreach (var item in _entryViews)
-            {
-                if (item.GetQuest().Id == questId)
-                {
-                    view = item;
-                    break;
-                }
-            }
+            var view = GetEntryByQuestId(questId);
 
             if (view != null)
                 view.RefreshView();
         }
 
-        public Rect GetViewPortRect()
+        QuestEntryView GetEntryByQuestId(string questId)
         {
-            return _viewPort.rect;
+            foreach (var item in _entryViews)
+            {
+                if (item.GetQuest().Id == questId)
+                {
+                    return item;
+                }
+            }
+            return null;
         }
 
         // Interface APIs
@@ -118,7 +125,12 @@ namespace Views.QuestList
 
         public void OnCacheReloaded() { }
 
-        public void OnRemoveQuest(Quest quest) { }
+        public void OnRemoveQuest(Quest quest)
+        {
+            RemoveEntryView(quest.Id);
+
+            SortEntry();
+        }
 
         public void OnRestoreQuest(Quest quest)
         {
@@ -127,5 +139,11 @@ namespace Views.QuestList
             SortEntry();
         }
 
+        public void OnEditQuest(Quest quest)
+        {
+            RefreshEntryByQuestId(quest.Id);
+
+            SortEntry();
+        }
     }
 }

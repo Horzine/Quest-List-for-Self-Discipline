@@ -17,15 +17,18 @@ namespace Views.QuestList
 {
     public class QuestEntryView : MonoBehaviour, IComparable<QuestEntryView>
     {
-        const float LongPressedActiveTime = 2;
+        const float LongPressedActiveTime = 1;
 
         [Header("Art Setting"), SerializeField] private Color _incompleteColor;
         [SerializeField] private Color _accomplishColor;
+        [SerializeField] private Color _incompleteButtonColor;
+        [SerializeField] private Color _accomplishButtonColor;
         [Space(30)]
         [SerializeField] private Image _entryBackground_img;
         [SerializeField] private Text _description_txt;
         [SerializeField] private TextMeshProUGUI _rewardPoint_txt;
         [SerializeField] private Button _accomplish_btn;
+        [SerializeField] private TextMeshProUGUI _accomplish_txt;
 
         private Action<string> _clickAccomplishBtn;
         private Action<string, RectTransform> _longPressedEntry;
@@ -47,11 +50,11 @@ namespace Views.QuestList
             _longPressedEntry = longPressedEntry;
 
             var eventListener = EventTriggerListener.Get(gameObject);
-            eventListener._onPointerDown += (go, eventData) => OnEntryPointerDown();
-            eventListener._onPointerUp += (go, eventData) => OnEntryPointerUp();
-            eventListener._onBeginDrag += (go, eventData) => scrollView.OnBeginDrag(eventData);
-            eventListener._onDrag += (go, eventData) => scrollView.OnDrag(eventData);
-            eventListener._onEndDrag += (go, eventData) => scrollView.OnEndDrag(eventData);
+            eventListener.PointerDownEvent += (go, eventData) => OnEntryPointerDown();
+            eventListener.PointerUpEvent += (go, eventData) => OnEntryPointerUp();
+            eventListener.BeginDragEvent += (go, eventData) => scrollView.OnBeginDrag(eventData);
+            eventListener.DragEvent += (go, eventData) => scrollView.OnDrag(eventData);
+            eventListener.EndDragEvent += (go, eventData) => scrollView.OnEndDrag(eventData);
 
             _accomplish_btn.onClick.AddListener(OnClickAccomplishBtn);
 
@@ -83,14 +86,21 @@ namespace Views.QuestList
             else
                 _state = newState;
 
+            var btnImage = _accomplish_btn.GetComponent<Image>();
             switch (newState)
             {
                 case QuestEntryState.Incomplete:
                     _entryBackground_img.color = _incompleteColor;
+                    btnImage.color = _incompleteButtonColor;
+                    _accomplish_txt.text = "Accomplish";
                     break;
+
                 case QuestEntryState.Accomplish:
                     _entryBackground_img.color = _accomplishColor;
+                    btnImage.color = _accomplishButtonColor;
+                    _accomplish_txt.text = "Incomplete";
                     break;
+
                 case QuestEntryState.NullState:
                     Debug.LogError("Shouldn't switch to null state");
                     break;
@@ -114,7 +124,6 @@ namespace Views.QuestList
 
         private void OnEntryPointerDown()
         {
-            Debug.Log("On Entry Pointer Down");
             if (_longPressedTimerCoroutine == null)
             {
                 _longPressedTimerCoroutine = StartCoroutine(LongPressedTimer());
@@ -123,7 +132,6 @@ namespace Views.QuestList
 
         private void OnEntryPointerUp()
         {
-            Debug.Log("On Entry Pointer Up");
             if (_longPressedTimerCoroutine != null)
             {
                 StopCoroutine(_longPressedTimerCoroutine);

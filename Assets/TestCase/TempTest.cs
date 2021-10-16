@@ -20,7 +20,7 @@ namespace TestCase
             // Debug.Log(result.Count); //null;
 
             var cor = StartCoroutine(TestCoroutine());
-            cor = null;
+            // cor = null;
             StopCoroutine(cor);
         }
 

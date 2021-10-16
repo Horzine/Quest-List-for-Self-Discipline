@@ -647,7 +647,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _canvasRenderer: {fileID: 5331857073677691805}
   _edit_btn: {fileID: 7698900752744894639}
+  _edit_txt: {fileID: 3027698856852177230}
   _delete_btn: {fileID: 7580829389055675415}
+  _delete_txt: {fileID: 5774552401571437547}
   _close_btn: {fileID: 5345855238770115317}
   _panel: {fileID: 270480216286455659}
 --- !u!1 &8542415401550864759

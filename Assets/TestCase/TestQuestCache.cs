@@ -34,6 +34,11 @@ namespace TestCase
             Debug.Log($"{_name} OnCacheReloaded");
         }
 
+        public void OnEditQuest(Quest quest)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public void OnRemoveQuest(Quest quest)
         {
             throw new System.NotImplementedException();

@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Views.AddQuset;
+using Views.EditQuest;
 using Views.EntryOperation;
 using Views.QuestList;
 
@@ -25,6 +26,8 @@ namespace Views
         [SerializeField] private TextMeshProUGUI _motto_txt;
         [SerializeField] private Button _addQuest_btn;
         [SerializeField] private TextMeshProUGUI _addQuest_txt;
+        [SerializeField] private Button _reload_btn;
+        [SerializeField] private TextMeshProUGUI _reload_txt;
 
         private QuestCache _questCache;
         private QuestListView _questListView;
@@ -32,6 +35,7 @@ namespace Views
         private GameObject _addQuestViewPrefab;
         private GameObject _questListViewPrefab;
         private GameObject _entryOperationViewPrefab;
+        private GameObject _editQuestViewPrefab;
 
         public void Init(QuestCache questCache)
         {
@@ -52,8 +56,10 @@ namespace Views
         {
             _motto_txt.text = "Dedication Focus Discipline\nPractice more !!!";
             _addQuest_txt.text = "Add Quest";
+            _reload_txt.text = "Reload";
 
             _addQuest_btn.onClick.AddListener(OnClickAddQuestBtn);
+            _reload_btn.onClick.AddListener(_questCache.Reload);
         }
 
         private void OnClickAddQuestBtn()
@@ -77,12 +83,21 @@ namespace Views
 
         private void OnClickDeleteQuestBtn(string questId)
         {
-            Debug.Log("On Click Delete Quest Btn");
+            _questCache.RemoveQeust(questId);
+
+            OnClickOperationViewCloseBtn();
         }
 
         private void OnClickEditQuestBtn(string questId)
         {
-            Debug.Log("On Click Edit Quest Btn");
+            OnClickOperationViewCloseBtn();
+
+            if (!_editQuestViewPrefab)
+                _editQuestViewPrefab = AssetsLoader.GetInstance().LoadGameObject("Assets/Resources/Views/edit_quest_view.prefab");
+
+            var view = Instantiate(_editQuestViewPrefab).GetComponent<EditQuestView>();
+            view.Init(_questCache.GetQuest(questId), _questCache);
+            PresentViewController(view, DismissPresentedViewController);
         }
 
         private void OnClickOperationViewCloseBtn()
@@ -96,8 +111,10 @@ namespace Views
 
         public void OnCacheReloaded()
         {
-            Destroy(_questListView.gameObject);
-
+            if (_questListView != null)
+            {
+                Destroy(_questListView.gameObject);
+            }
             LoadQuestListView();
         }
 
@@ -106,6 +123,8 @@ namespace Views
         public void OnAddQuest(Quest quest) { }
 
         public void OnRemoveQuest(Quest quest) { }
+
+        public void OnEditQuest(Quest quest) { }
 
         public void ShowEntryOperationView(string questId, RectTransform entryViewRtf)
         {

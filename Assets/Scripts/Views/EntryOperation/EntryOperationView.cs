@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,7 +17,9 @@ namespace Views.EntryOperation
     {
         [SerializeField] private CanvasRenderer _canvasRenderer;
         [SerializeField] private Button _edit_btn;
+        [SerializeField] private TextMeshProUGUI _edit_txt;
         [SerializeField] private Button _delete_btn;
+        [SerializeField] private TextMeshProUGUI _delete_txt;
         [SerializeField] private Button _close_btn;
         [SerializeField] private RectTransform _panel;
 
@@ -28,6 +31,9 @@ namespace Views.EntryOperation
 
             RectTransformUtility.ScreenPointToWorldPointInRectangle(GetComponent<RectTransform>(), Camera.main.WorldToScreenPoint(entryRtf.position), Camera.main, out Vector3 localPosition);
             _panel.position = localPosition;
+
+            _edit_txt.text = "Edit";
+            _delete_txt.text = "Delete";
         }
     }
 }

@@ -21,6 +21,7 @@ namespace Cache
         void OnRestoreQuest(Quest quest);
         void OnAddQuest(Quest quest);
         void OnRemoveQuest(Quest quest);
+        void OnEditQuest(Quest quest);
     }
     public class QuestCache
     {
@@ -75,6 +76,14 @@ namespace Cache
             SaveAllQuestArchive();
             Archive.WriteValue(AccumulateCreateCountKeyName, currentAcumulateCreateCount + 1);
             NotifyObserver((observer) => observer.OnAddQuest(quest));
+        }
+
+        public void EditQuest(string questId, string description, int rewardPoint, int sortOrder)
+        {
+            var quest = GetQuest(questId);
+            quest.Update(description, rewardPoint, sortOrder);
+            SaveAllQuestArchive();
+            NotifyObserver((observer) => observer.OnEditQuest(quest));
         }
 
         public (string nextId, int currentAcumulateCreateCount) GetNextCreateQuestId()
