@@ -23,7 +23,7 @@ namespace Views.QuestList
         private List<QuestEntryView> _entryViews = new List<QuestEntryView>();
         private IMainViewProtocol _mainView;
 
-        public void Init(QuestCache questCache, List<Quest> quests, IMainViewProtocol mainView)
+        public void Init(QuestCache questCache, IEnumerable<Quest> quests, IMainViewProtocol mainView)
         {
             _questCache = questCache;
             _questCache.AddObserver(this);

@@ -60,7 +60,7 @@ namespace Cache
             return _allQuests.ContainsKey(questId) ? _allQuests[questId] : null;
         }
 
-        public List<Quest> GetAllQuest()
+        public IEnumerable<Quest> GetAllQuest()
         {
             var quests = _allQuests.Values.ToList();
             quests.Sort();

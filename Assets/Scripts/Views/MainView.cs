@@ -33,7 +33,6 @@ namespace Views
         private GameObject _questListViewPrefab;
         private GameObject _entryOperationViewPrefab;
 
-
         public void Init(QuestCache questCache)
         {
             _questCache = questCache;
@@ -86,10 +85,21 @@ namespace Views
             Debug.Log("On Click Edit Quest Btn");
         }
 
+        private void OnClickOperationViewCloseBtn()
+        {
+            Destroy(_entryOperationView.gameObject);
+            _entryOperationView = null;
+        }
+
         // Interface APIs
         public void OnAccomplishQuest(Quest quest) { }
 
-        public void OnCacheReloaded() { }
+        public void OnCacheReloaded()
+        {
+            Destroy(_questListView.gameObject);
+
+            LoadQuestListView();
+        }
 
         public void OnRestoreQuest(Quest quest) { }
 
@@ -102,8 +112,8 @@ namespace Views
             if (!_entryOperationViewPrefab)
                 _entryOperationViewPrefab = AssetsLoader.GetInstance().LoadGameObject("Assets/Resources/Views/entry_operation_panel.prefab");
 
-            _entryOperationView = Instantiate(_entryOperationViewPrefab, entryViewRtf).GetComponent<EntryOperationView>();
-            _entryOperationView.Init(questId, _questListView.GetViewPortRect(), OnClickEditQuestBtn, OnClickDeleteQuestBtn);
+            _entryOperationView = Instantiate(_entryOperationViewPrefab, GetComponent<RectTransform>()).GetComponent<EntryOperationView>();
+            _entryOperationView.Init(questId, entryViewRtf, OnClickEditQuestBtn, OnClickDeleteQuestBtn, OnClickOperationViewCloseBtn);
         }
     }
 }
