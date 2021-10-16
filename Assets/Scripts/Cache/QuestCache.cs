@@ -71,7 +71,7 @@ namespace Cache
         public void AddQuest(string description, int rewardPoint)
         {
             var (nextId, currentAcumulateCreateCount) = GetNextCreateQuestId();
-            var quest = new Quest(nextId, description, currentAcumulateCreateCount * 10, rewardPoint);
+            var quest = new Quest(nextId, description, rewardPoint, currentAcumulateCreateCount * 10);
             _allQuests.Add(nextId, quest);
             SaveAllQuestArchive();
             Archive.WriteValue(AccumulateCreateCountKeyName, currentAcumulateCreateCount + 1);
