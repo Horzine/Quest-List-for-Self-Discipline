@@ -4,6 +4,7 @@ using Cache;
 using DataStructure;
 using Framework;
 using UnityEngine;
+using UnityEngine.UI;
 
 /*
   ┎━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┒
@@ -15,6 +16,7 @@ namespace Views.QuestList
 {
     public class QuestListView : MonoBehaviour, IQuestCacheObserver
     {
+        [SerializeField] private ScrollRect _scrollView;
         [SerializeField] private RectTransform _viewPort;
         [SerializeField] private RectTransform _content;
 
@@ -46,7 +48,7 @@ namespace Views.QuestList
         private void CreateEntryView(Quest quest)
         {
             var view = Instantiate(_entryPrefab, _content).GetComponent<QuestEntryView>();
-            view.Init(quest, OnClickAccomplish, OnLongPressedEntry);
+            view.Init(quest, OnClickAccomplish, OnLongPressedEntry, _scrollView);
             _entryViews.Add(view);
         }
 

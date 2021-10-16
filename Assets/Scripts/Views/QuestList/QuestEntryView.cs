@@ -4,6 +4,7 @@ using DataStructure;
 using Framework;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 /*
@@ -39,7 +40,7 @@ namespace Views.QuestList
             Accomplish = 2,
         }
 
-        public void Init(Quest quest, Action<string> clickAccomplishBtn, Action<string, RectTransform> longPressedEntry)
+        public void Init(Quest quest, Action<string> clickAccomplishBtn, Action<string, RectTransform> longPressedEntry, ScrollRect scrollView)
         {
             _quest = quest;
             _clickAccomplishBtn = clickAccomplishBtn;
@@ -48,6 +49,9 @@ namespace Views.QuestList
             var eventListener = EventTriggerListener.Get(gameObject);
             eventListener._onPointerDown += (go, eventData) => OnEntryPointerDown();
             eventListener._onPointerUp += (go, eventData) => OnEntryPointerUp();
+            eventListener._onBeginDrag += (go, eventData) => scrollView.OnBeginDrag(eventData);
+            eventListener._onDrag += (go, eventData) => scrollView.OnDrag(eventData);
+            eventListener._onEndDrag += (go, eventData) => scrollView.OnEndDrag(eventData);
 
             _accomplish_btn.onClick.AddListener(OnClickAccomplishBtn);
 

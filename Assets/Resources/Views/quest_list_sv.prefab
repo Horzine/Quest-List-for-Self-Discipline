@@ -525,5 +525,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffbfec5fe5fc3d446949de345cd49503, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _scrollView: {fileID: 3273729288254310069}
   _viewPort: {fileID: 5467420863350165061}
   _content: {fileID: 2831056393515248921}
