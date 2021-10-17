@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using System;
+using Framework;
 
 /*
   ┎━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┒
@@ -14,6 +13,23 @@ namespace Handler
     {
 
 
+
+        public static long GetNowTimeStamp()
+        {
+            return DateTime.Now.GetTimeStamp();
+        }
+
+        public static long GetTomorrowZeroTimeStamp()
+        {
+            var now = DateTime.Now;
+            var tomorrow = new DateTime(now.Year, now.Month, now.Day + 1);
+            return tomorrow.GetTimeStamp();
+        }
+
+        public static int GetSecondsRemainingUntilTomorrow()
+        {
+            return (int)(GetTomorrowZeroTimeStamp() - GetNowTimeStamp());
+        }
 
     }
 }
