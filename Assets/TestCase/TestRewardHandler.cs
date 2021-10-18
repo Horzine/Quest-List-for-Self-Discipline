@@ -21,5 +21,7 @@ namespace TestCase
             Debug.Log($"Remaining: {RewardHandler.GetSecondsRemainingUntilTomorrow()}");
         }
 
+
+
     }
 }

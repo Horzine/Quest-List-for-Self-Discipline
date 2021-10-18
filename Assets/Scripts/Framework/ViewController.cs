@@ -24,7 +24,7 @@ namespace Framework
             TryGetComponent(out _canvasGroup);
         }
 
-        protected void PresentViewController(ViewController vc, Action vcCloseCallback)
+        public void PresentViewController(ViewController vc, Action vcCloseCallback)
         {
             if (PresentedVc == null)
             {
@@ -48,7 +48,7 @@ namespace Framework
             }
         }
 
-        protected void DismissPresentedViewController()
+        public void DismissPresentedViewController()
         {
             if (!PresentedVc)
                 return;

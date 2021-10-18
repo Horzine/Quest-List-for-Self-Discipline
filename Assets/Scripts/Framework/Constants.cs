@@ -1,22 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 /*
   ┎━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┒
   ┃   Dedication Focus Discipline   ┃
   ┃        Practice more !!!        ┃
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 */
-namespace Views.Reward
+namespace Framework
 {
-    public class RewardView : MonoBehaviour
+    public static class Constants
     {
-
-        public void Init()
-        {
-
-        }
-
+        public const bool DebugMode = true;
     }
 }

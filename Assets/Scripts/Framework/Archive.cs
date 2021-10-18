@@ -39,9 +39,15 @@ namespace Framework
                         break;
                     }
 
+                case TypeCode.Int64:
+                    {
+                        PlayerPrefs.SetString(key, Convert.ToString(value));
+                        break;
+                    }
+
                 default:
                     {
-                        Debug.LogError("PlayerPrefs only support 'int', 'float', 'string', 'bool'");
+                        Debug.LogError("Archive only support 'int', 'float', 'string', 'bool', 'long'");
                         return;
                     }
             }
@@ -52,7 +58,7 @@ namespace Framework
         {
             if (!PlayerPrefs.HasKey(key))
             {
-                Debug.LogError("PlayerPrefs don't have this key");
+                Debug.LogError("Archive don't have this key");
                 return default;
             }
 
@@ -78,9 +84,14 @@ namespace Framework
                         return (T)(object)Convert.ToBoolean(PlayerPrefs.GetInt(key));
                     }
 
+                case TypeCode.Int64:
+                    {
+                        return (T)(object)Convert.ToInt64(PlayerPrefs.GetString(key));
+                    }
+
                 default:
                     {
-                        Debug.LogError("PlayerPrefs only support 'int', 'float', 'string', 'bool'");
+                        Debug.LogError("Archive only support 'int', 'float', 'string', 'bool', 'long'");
                         return default;
                     }
             }

@@ -141,5 +141,29 @@ namespace Cache
             var questList = _allQuests.Values.ToList();
             _configHandler.SaveConfig(JsonConvert.SerializeObject(questList));
         }
+
+        public void ResetAllQuestAccomplishState()
+        {
+            foreach (var item in _allQuests)
+            {
+                item.Value.Accomplish = false;
+            }
+            SaveAllQuestArchive();
+            Reload();
+            NotifyObserver((observer) => observer.OnCacheReloaded());
+        }
+
+        public int CalculateCurrentReward()
+        {
+            int reward = 0;
+            foreach (var item in _allQuests)
+            {
+                if (item.Value.Accomplish)
+                {
+                    reward += item.Value.RewardPoint;
+                }
+            }
+            return reward;
+        }
     }
 }

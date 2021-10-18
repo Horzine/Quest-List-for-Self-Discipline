@@ -2,6 +2,7 @@ using Cache;
 using Handler;
 using UnityEngine;
 using Views;
+using Views.Reward;
 
 /*
   ┎━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┒
@@ -15,6 +16,8 @@ namespace Framework
     {
         public static GameInitializer Instance { get; private set; }
         private QuestCache _questCache;
+        private RewardHandler _rewardHandler;
+        private MainView _mainView;
         private RectTransform _canvas;
 
         private void Awake()
@@ -39,6 +42,10 @@ namespace Framework
             LoadData();
 
             LoadMainView();
+
+            HandleReward();
+
+            Invoke(nameof(HandleReward), RewardHandler.GetSecondsRemainingUntilTomorrow());
         }
 
         private void LoadData()
@@ -51,8 +58,19 @@ namespace Framework
         private void LoadMainView()
         {
             var prefab = AssetsLoader.GetInstance().LoadGameObject("Assets/Resources/Views/main_view.prefab");
-            var view = Instantiate(prefab, _canvas).GetComponent<MainView>();
-            view.Init(_questCache);
+            _mainView = Instantiate(prefab, _canvas).GetComponent<MainView>();
+            _mainView.Init(_questCache);
+        }
+
+        private void HandleReward()
+        {
+            _rewardHandler = new RewardHandler(_questCache, (rewardPoint) =>
+            {
+                var prefab = AssetsLoader.GetInstance().LoadGameObject("Assets/Resources/Views/reward_view.prefab");
+                var vc = Instantiate(prefab).GetComponent<RewardViewController>();
+                vc.Init(_rewardHandler, rewardPoint);
+                _mainView.PresentViewController(vc, _mainView.DismissPresentedViewController);
+            });
         }
     }
 }
