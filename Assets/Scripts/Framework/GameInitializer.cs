@@ -64,13 +64,15 @@ namespace Framework
 
         private void HandleReward()
         {
-            _rewardHandler = new RewardHandler(_questCache, (rewardPoint) =>
+            _rewardHandler = new RewardHandler(_questCache);
+            _rewardHandler.SetNotifyRewardCallback((rewardPoint) =>
             {
                 var prefab = AssetsLoader.GetInstance().LoadGameObject("Assets/Resources/Views/reward_view.prefab");
                 var vc = Instantiate(prefab).GetComponent<RewardViewController>();
                 vc.Init(_rewardHandler, rewardPoint);
                 _mainView.PresentViewController(vc, _mainView.DismissPresentedViewController);
             });
+            _rewardHandler.HandleCurrentRewardState();
         }
     }
 }

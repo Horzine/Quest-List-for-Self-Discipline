@@ -17,12 +17,14 @@ namespace Handler
         private QuestCache _questCache;
         private Action<int> _notifyReward;
 
-        public RewardHandler(QuestCache questCache, Action<int> notifyReward)
+        public RewardHandler(QuestCache questCache)
         {
             _questCache = questCache;
-            _notifyReward = notifyReward;
+        }
 
-            HandleCurrentRewardState();
+        public void SetNotifyRewardCallback(Action<int> notifyReward)
+        {
+            _notifyReward = notifyReward;
         }
 
         public void HandleCurrentRewardState()
