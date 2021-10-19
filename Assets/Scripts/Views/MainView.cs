@@ -24,6 +24,7 @@ namespace Views
     }
     public class MainView : ViewController, IMainViewProtocol, IQuestCacheObserver
     {
+        [SerializeField] private RectTransform _panel;
         [SerializeField] private TextMeshProUGUI _motto_txt;
         [SerializeField] private Button _addQuest_btn;
         [SerializeField] private TextMeshProUGUI _addQuest_txt;
@@ -49,8 +50,7 @@ namespace Views
 
             LoadQuestListView();
 
-            var rtf = GetComponent<RectTransform>();
-            rtf.offsetMax = PanelAdaptationFullScreen.CalculateOffsetMax(rtf.rect.width);
+            _panel.offsetMax = PanelAdaptationFullScreen.CalculateOffsetMax(_panel.rect.width);
         }
 
         private void OnDestroy()
@@ -89,7 +89,7 @@ namespace Views
             if (!_questListViewPrefab)
                 _questListViewPrefab = AssetsLoader.GetInstance().LoadGameObject("Assets/Resources/Views/quest_list_sv.prefab");
 
-            _questListView = Instantiate(_questListViewPrefab, GetComponent<RectTransform>()).GetComponent<QuestListView>();
+            _questListView = Instantiate(_questListViewPrefab, _panel).GetComponent<QuestListView>();
             _questListView.Init(_questCache, _questCache.GetAllQuest(), this);
         }
 
