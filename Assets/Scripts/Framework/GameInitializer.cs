@@ -45,7 +45,7 @@ namespace Framework
 
             HandleReward();
 
-            Invoke(nameof(HandleReward), RewardHandler.GetSecondsRemainingUntilTomorrow());
+            InvokeHandleRewardAtTomorrowZero();
         }
 
         private void LoadData()
@@ -72,7 +72,13 @@ namespace Framework
                 vc.Init(_rewardHandler, rewardPoint);
                 _mainView.PresentViewController(vc, _mainView.DismissPresentedViewController);
             });
+            _rewardHandler.SetFinishClaimRewardCallback(InvokeHandleRewardAtTomorrowZero);
             _rewardHandler.HandleCurrentRewardState();
+        }
+
+        void InvokeHandleRewardAtTomorrowZero()
+        {
+            Invoke(nameof(HandleReward), RewardHandler.GetSecondsRemainingUntilTomorrow());
         }
     }
 }

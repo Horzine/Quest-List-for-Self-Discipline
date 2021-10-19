@@ -15,7 +15,8 @@ namespace Handler
         const string TomorrowRewardTimeKeyName = "tomorrow_reward_time";
 
         private QuestCache _questCache;
-        private Action<int> _notifyReward;
+        private Action<int> _notifyRewardCallback;
+        private Action _finishClaimRewardCallback;
 
         public RewardHandler(QuestCache questCache)
         {
@@ -24,14 +25,19 @@ namespace Handler
 
         public void SetNotifyRewardCallback(Action<int> notifyReward)
         {
-            _notifyReward = notifyReward;
+            _notifyRewardCallback = notifyReward;
+        }
+
+        public void SetFinishClaimRewardCallback(Action finishClaimRewardCallback)
+        {
+            _finishClaimRewardCallback = finishClaimRewardCallback;
         }
 
         public void HandleCurrentRewardState()
         {
             if (IsReachRewardTime())
             {
-                _notifyReward?.Invoke(_questCache.CalculateCurrentReward());
+                _notifyRewardCallback?.Invoke(_questCache.CalculateCurrentReward());
             }
         }
 
@@ -39,6 +45,7 @@ namespace Handler
         {
             Archive.WriteValue(TomorrowRewardTimeKeyName, GetTomorrowZeroTimeStamp());
             _questCache.ResetAllQuestAccomplishState();
+            _finishClaimRewardCallback?.Invoke();
         }
 
         private bool IsReachRewardTime()
@@ -59,15 +66,21 @@ namespace Handler
 
         public static long GetTomorrowZeroTimeStamp()
         {
-            var now = DateTime.Now;
-            var tomorrow = new DateTime(now.Year, now.Month, now.Day + 1);
-            return tomorrow.GetTimeStamp();
+            if (Constants.DebugMode)
+            {
+                return GetNowTimeStamp() + 15;
+            }
+            else
+            {
+                var now = DateTime.Now;
+                var tomorrow = new DateTime(now.Year, now.Month, now.Day + 1);
+                return tomorrow.GetTimeStamp();
+            }
         }
 
         public static int GetSecondsRemainingUntilTomorrow()
         {
             return (int)(GetTomorrowZeroTimeStamp() - GetNowTimeStamp());
         }
-
     }
 }
