@@ -70,6 +70,7 @@ namespace Framework
                 var prefab = AssetsLoader.GetInstance().LoadGameObject("Assets/Resources/Views/reward_view.prefab");
                 var vc = Instantiate(prefab).GetComponent<RewardViewController>();
                 vc.Init(_rewardHandler, rewardPoint);
+                _mainView.DismissPresentedViewController();
                 _mainView.PresentViewController(vc, _mainView.DismissPresentedViewController);
             });
             _rewardHandler.SetFinishClaimRewardCallback(InvokeHandleRewardAtTomorrowZero);
