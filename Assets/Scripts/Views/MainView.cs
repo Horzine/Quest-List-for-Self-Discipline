@@ -4,6 +4,7 @@ using Framework;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Utilities;
 using Views.AddQuset;
 using Views.EditQuest;
 using Views.EntryOperation;
@@ -28,6 +29,7 @@ namespace Views
         [SerializeField] private TextMeshProUGUI _addQuest_txt;
         [SerializeField] private Button _reload_btn;
         [SerializeField] private TextMeshProUGUI _reload_txt;
+        [SerializeField] private Button _deleteAll_btn;
 
         private QuestCache _questCache;
         private QuestListView _questListView;
@@ -45,6 +47,9 @@ namespace Views
             SetupView();
 
             LoadQuestListView();
+
+            var rtf = GetComponent<RectTransform>();
+            rtf.offsetMax = PanelAdaptationFullScreen.CalculateOffsetMax(rtf.rect.width);
         }
 
         private void OnDestroy()
@@ -60,6 +65,10 @@ namespace Views
 
             _addQuest_btn.onClick.AddListener(OnClickAddQuestBtn);
             _reload_btn.onClick.AddListener(_questCache.Reload);
+
+
+            _deleteAll_btn.gameObject.SetActive(Constants.DebugMode);
+            _deleteAll_btn.onClick.AddListener(OnClickDeleteAllBtn);
         }
 
         private void OnClickAddQuestBtn()
@@ -104,6 +113,12 @@ namespace Views
         {
             Destroy(_entryOperationView.gameObject);
             _entryOperationView = null;
+        }
+
+        private void OnClickDeleteAllBtn()
+        {
+            Archive.DeleteAllKeys();
+            _questCache.Reload();
         }
 
         // Interface APIs
