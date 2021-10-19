@@ -30,6 +30,7 @@ namespace Views
         [SerializeField] private Button _reload_btn;
         [SerializeField] private TextMeshProUGUI _reload_txt;
         [SerializeField] private Button _deleteAll_btn;
+        [SerializeField] private TextMeshProUGUI _deleteAll_txt;
 
         private QuestCache _questCache;
         private QuestListView _questListView;
@@ -62,10 +63,12 @@ namespace Views
             _motto_txt.text = "Dedication Focus Discipline\nPractice more !!!";
             _addQuest_txt.text = "Add Quest";
             _reload_txt.text = "Reload";
+            _deleteAll_txt.text = "Delete All";
 
             _addQuest_btn.onClick.AddListener(OnClickAddQuestBtn);
-            _reload_btn.onClick.AddListener(_questCache.Reload);
 
+            _reload_btn.gameObject.SetActive(Constants.DebugMode);
+            _reload_btn.onClick.AddListener(OnClickReloadBtn);
 
             _deleteAll_btn.gameObject.SetActive(Constants.DebugMode);
             _deleteAll_btn.onClick.AddListener(OnClickDeleteAllBtn);
@@ -118,6 +121,12 @@ namespace Views
         private void OnClickDeleteAllBtn()
         {
             Archive.DeleteAllKeys();
+
+            OnClickReloadBtn();
+        }
+
+        private void OnClickReloadBtn()
+        {
             _questCache.Reload();
         }
 

@@ -199,7 +199,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Delete All
+  m_text: -delete-
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1073,3 +1073,4 @@ MonoBehaviour:
   _reload_btn: {fileID: 5039140350240087857}
   _reload_txt: {fileID: 996836400886948879}
   _deleteAll_btn: {fileID: 4406925055421117079}
+  _deleteAll_txt: {fileID: 7528639859706343226}
