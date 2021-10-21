@@ -8,5 +8,5 @@ Feature:
 4. Daily reset all quest states and calculate the benefits
 
 Description: 
-	"Dedication Focus Discipline. Practice more !" is my motto. Hope you become a self-discipline person with me  :)
+	"Dedication Focus Discipline. Practice more !" is my motto. I hope you and I become a self-disciplined person  :)
 	 
