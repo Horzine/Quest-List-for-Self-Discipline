@@ -73,7 +73,7 @@ namespace Handler
             else
             {
                 var now = DateTime.Now;
-                var tomorrow = new DateTime(now.Year, now.Month, now.Day + 1);
+                var tomorrow = new DateTime(now.Year, now.Month, now.Day) + new TimeSpan(24, 0, 0);
                 return tomorrow.GetTimeStamp();
             }
         }
