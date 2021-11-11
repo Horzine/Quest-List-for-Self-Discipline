@@ -1,5 +1,6 @@
 using System.Collections.Generic;
-using Cache;
+using Caches;
+using Clients;
 using DataStructure;
 using Framework;
 using UnityEngine;
@@ -20,13 +21,15 @@ namespace Views.QuestList
 
         private GameObject _entryPrefab;
         private QuestCache _questCache;
+        private QuestClient _questClient;
         private List<QuestEntryView> _entryViews = new List<QuestEntryView>();
         private IMainViewProtocol _mainView;
 
-        public void Init(QuestCache questCache, IEnumerable<Quest> quests, IMainViewProtocol mainView)
+        public void Init(QuestCache questCache, QuestClient questClient, IEnumerable<Quest> quests, IMainViewProtocol mainView)
         {
             _questCache = questCache;
-            _questCache.AddObserver(this);
+            _questCache.AddQuestCacheObserver(this);
+            _questClient = questClient;
             _mainView = mainView;
 
             _entryPrefab = AssetsLoader.GetInstance().LoadGameObject("Assets/Resources/Views/quest_entry_view.prefab");
@@ -40,7 +43,7 @@ namespace Views.QuestList
 
         private void OnDestroy()
         {
-            _questCache?.RemoveObserver(this);
+            _questCache?.RemoveQuestCacheObserver(this);
         }
 
         private void CreateEntryView(Quest quest)
@@ -75,11 +78,11 @@ namespace Views.QuestList
             var quest = _questCache.GetQuest(questId);
             if (!quest.Accomplish)
             {
-                _questCache.AccomplishQuest(quest.Id);
+                _questClient.AccomplishQuest(quest.Id);
             }
             else
             {
-                _questCache.RestoreQuest(quest.Id);
+                _questClient.RestoreQuest(quest.Id);
             }
         }
 
@@ -124,6 +127,14 @@ namespace Views.QuestList
         }
 
         public void OnCacheReloaded() { }
+
+        public void OnResetAllQuestAccomplishState()
+        {
+            foreach (var item in _entryViews)
+            {
+                item.RefreshView();
+            }
+        }
 
         public void OnRemoveQuest(Quest quest)
         {

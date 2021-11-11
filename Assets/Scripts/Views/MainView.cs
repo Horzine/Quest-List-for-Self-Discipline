@@ -1,5 +1,5 @@
-using Cache;
-using DataStructure;
+using Caches;
+using Clients;
 using Framework;
 using TMPro;
 using UnityEngine;
@@ -9,6 +9,7 @@ using Views.AddQuset;
 using Views.EditQuest;
 using Views.EntryOperation;
 using Views.QuestList;
+using Cache = Caches.Cache;
 
 /*
   ┎━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┒
@@ -22,7 +23,7 @@ namespace Views
     {
         void ShowEntryOperationView(string questId, RectTransform entryViewRtf);
     }
-    public class MainView : ViewController, IMainViewProtocol, IQuestCacheObserver
+    public class MainView : ViewController, IMainViewProtocol, ICacheObserver
     {
         [SerializeField] private RectTransform _panel;
         [SerializeField] private TextMeshProUGUI _motto_txt;
@@ -34,6 +35,7 @@ namespace Views
         [SerializeField] private TextMeshProUGUI _deleteAll_txt;
 
         private QuestCache _questCache;
+        private QuestClient _questClient;
         private QuestListView _questListView;
         private EntryOperationView _entryOperationView;
         private GameObject _addQuestViewPrefab;
@@ -41,14 +43,13 @@ namespace Views
         private GameObject _entryOperationViewPrefab;
         private GameObject _editQuestViewPrefab;
 
-        public void Init(QuestCache questCache)
+        public void Init(QuestCache questCache, QuestClient questClient)
         {
+            _questClient = questClient;
             _questCache = questCache;
             _questCache.AddObserver(this);
 
             SetupView();
-
-            LoadQuestListView();
 
             _panel.offsetMax = PanelAdaptationFullScreen.CalculateOffsetMax(_panel.rect.width);
         }
@@ -80,7 +81,7 @@ namespace Views
                 _addQuestViewPrefab = AssetsLoader.GetInstance().LoadGameObject("Assets/Resources/Views/add_quest_view.prefab");
 
             var view = Instantiate(_addQuestViewPrefab).GetComponent<AddQuestView>();
-            view.Init(_questCache);
+            view.Init(_questCache, _questClient);
             PresentViewController(view, DismissPresentedViewController);
         }
 
@@ -90,12 +91,12 @@ namespace Views
                 _questListViewPrefab = AssetsLoader.GetInstance().LoadGameObject("Assets/Resources/Views/quest_list_sv.prefab");
 
             _questListView = Instantiate(_questListViewPrefab, _panel).GetComponent<QuestListView>();
-            _questListView.Init(_questCache, _questCache.GetAllQuest(), this);
+            _questListView.Init(_questCache, _questClient, _questCache.GetAllQuest(), this);
         }
 
         private void OnClickDeleteQuestBtn(string questId)
         {
-            _questCache.RemoveQeust(questId);
+            _questClient.RemoveQuest(questId);
 
             OnClickOperationViewCloseBtn();
         }
@@ -108,7 +109,7 @@ namespace Views
                 _editQuestViewPrefab = AssetsLoader.GetInstance().LoadGameObject("Assets/Resources/Views/edit_quest_view.prefab");
 
             var view = Instantiate(_editQuestViewPrefab).GetComponent<EditQuestView>();
-            view.Init(_questCache.GetQuest(questId), _questCache);
+            view.Init(_questCache.GetQuest(questId), _questClient);
             PresentViewController(view, DismissPresentedViewController);
         }
 
@@ -127,28 +128,22 @@ namespace Views
 
         private void OnClickReloadBtn()
         {
-            _questCache.Reload();
+            _questClient.FetchAllQuest();
         }
 
         // Interface APIs
-        public void OnAccomplishQuest(Quest quest) { }
-
-        public void OnCacheReloaded()
+        public void OnCacheChanged(Cache cache)
         {
-            if (_questListView != null)
+            if (cache is QuestCache questCache)
             {
-                Destroy(_questListView.gameObject);
+                if (_questListView != null)
+                {
+                    Destroy(_questListView.gameObject);
+                    _questListView = null;
+                }
+                LoadQuestListView();
             }
-            LoadQuestListView();
         }
-
-        public void OnRestoreQuest(Quest quest) { }
-
-        public void OnAddQuest(Quest quest) { }
-
-        public void OnRemoveQuest(Quest quest) { }
-
-        public void OnEditQuest(Quest quest) { }
 
         public void ShowEntryOperationView(string questId, RectTransform entryViewRtf)
         {

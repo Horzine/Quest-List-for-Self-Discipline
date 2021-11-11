@@ -1,5 +1,6 @@
 using System;
-using Cache;
+using Caches;
+using Clients;
 using Framework;
 
 /*
@@ -15,12 +16,14 @@ namespace Handler
         const string TomorrowRewardTimeKeyName = "tomorrow_reward_time";
 
         private QuestCache _questCache;
+        private QuestClient _questClient;
         private Action<int> _notifyRewardCallback;
         private Action _finishClaimRewardCallback;
 
-        public RewardHandler(QuestCache questCache)
+        public RewardHandler(QuestCache questCache, QuestClient questClient)
         {
             _questCache = questCache;
+            _questClient = questClient;
         }
 
         public void SetNotifyRewardCallback(Action<int> notifyReward)
@@ -44,7 +47,7 @@ namespace Handler
         public void ClaimReward()
         {
             Archive.WriteValue(TomorrowRewardTimeKeyName, GetTomorrowZeroTimeStamp());
-            _questCache.ResetAllQuestAccomplishState();
+            _questClient.ResetAllQuestAccomplishState();
             _finishClaimRewardCallback?.Invoke();
         }
 

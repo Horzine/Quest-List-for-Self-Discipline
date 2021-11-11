@@ -1,4 +1,5 @@
-using Cache;
+using Caches;
+using Clients;
 using Handler;
 using UnityEngine;
 using Views;
@@ -16,6 +17,7 @@ namespace Framework
     {
         public static GameInitializer Instance { get; private set; }
         private QuestCache _questCache;
+        private QuestClient _questClient;
         private RewardHandler _rewardHandler;
         private MainView _mainView;
         private RectTransform _canvas;
@@ -39,6 +41,10 @@ namespace Framework
 
         private void Start()
         {
+            var questConfigHandler = new QuestConfigHandler();
+            _questCache = new QuestCache();
+            _questClient = new QuestClient(_questCache, questConfigHandler);
+
             LoadData();
 
             LoadMainView();
@@ -50,21 +56,19 @@ namespace Framework
 
         private void LoadData()
         {
-            var questConfigHandler = new QuestConfigHandler();
-            _questCache = new QuestCache(questConfigHandler);
-            _questCache.Reload();
+            _questClient.FetchAllQuest();
         }
 
         private void LoadMainView()
         {
             var prefab = AssetsLoader.GetInstance().LoadGameObject("Assets/Resources/Views/main_view.prefab");
             _mainView = Instantiate(prefab, _canvas).GetComponent<MainView>();
-            _mainView.Init(_questCache);
+            _mainView.Init(_questCache, _questClient);
         }
 
         private void HandleReward()
         {
-            _rewardHandler = new RewardHandler(_questCache);
+            _rewardHandler = new RewardHandler(_questCache, _questClient);
             _rewardHandler.SetNotifyRewardCallback((rewardPoint) =>
             {
                 var prefab = AssetsLoader.GetInstance().LoadGameObject("Assets/Resources/Views/reward_view.prefab");

@@ -1,4 +1,4 @@
-using Cache;
+using Clients;
 using DataStructure;
 using Framework;
 using TMPro;
@@ -26,12 +26,12 @@ namespace Views.EditQuest
         [SerializeField] private TextMeshProUGUI _sortOrder_label;
         [SerializeField] private InputField _sortOrder_ipf;
 
-        private QuestCache _questCache;
+        private QuestClient _questClient;
         private string _questId;
 
-        public void Init(Quest quest, QuestCache questCache)
+        public void Init(Quest quest, QuestClient questClient)
         {
-            _questCache = questCache;
+            _questClient = questClient;
             _questId = quest.Id;
 
             _modify_btn.onClick.AddListener(OnClickModifyBtn);
@@ -66,7 +66,7 @@ namespace Views.EditQuest
                 Debug.LogError("Description is Empty or Reward is Empty or SortOrder is Empty");
                 return;
             }
-            _questCache.EditQuest(_questId, description, int.Parse(rewardPoint), int.Parse(sortOrder));
+            _questClient.EditQuest(_questId, description, int.Parse(rewardPoint), int.Parse(sortOrder));
             Close();
         }
 

@@ -1,4 +1,5 @@
-using Cache;
+using Caches;
+using Clients;
 using Framework;
 using TMPro;
 using UnityEngine;
@@ -25,10 +26,12 @@ namespace Views.AddQuset
         [SerializeField] private InputField _reward_ipf;
 
         private QuestCache _questCache;
+        private QuestClient _questClient;
 
-        public void Init(QuestCache questCache)
+        public void Init(QuestCache questCache, QuestClient questClient)
         {
             _questCache = questCache;
+            _questClient = questClient;
 
             _create_btn.onClick.AddListener(OnClickCreateBtn);
             _create_txt.text = "Create";
@@ -52,7 +55,8 @@ namespace Views.AddQuset
                 Debug.LogError("Description is Empty or Reward is Empty");
                 return;
             }
-            _questCache.AddQuest(description, int.Parse(rewardPoint));
+            var (nextId, count) = _questCache.GetNextCreateQuestId();
+            _questClient.AddQuest(nextId, count, description, int.Parse(rewardPoint));
             Close();
         }
 

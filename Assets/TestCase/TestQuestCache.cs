@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Cache;
+using Caches;
 using DataStructure;
 using Newtonsoft.Json;
 using UnityEngine;
@@ -40,6 +40,11 @@ namespace TestCase
         }
 
         public void OnRemoveQuest(Quest quest)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void OnResetAllQuestAccomplishState()
         {
             throw new System.NotImplementedException();
         }

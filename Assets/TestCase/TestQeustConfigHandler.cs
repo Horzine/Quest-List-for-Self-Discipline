@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Cache;
+using Caches;
 using DataStructure;
 using Handler;
 using Newtonsoft.Json;
@@ -29,8 +29,8 @@ namespace TestCase
             var handler = new QuestConfigHandler();
             handler.SaveConfig(config);
 
-            var cache = new QuestCache(handler);
-            cache.Reload();
+            var cache = new QuestCache();
+            // cache.Reload();
 
             Debug.Log(cache.GetQuest("q_1").Description);
         }
