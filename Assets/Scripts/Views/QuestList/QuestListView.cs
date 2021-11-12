@@ -134,6 +134,8 @@ namespace Views.QuestList
             {
                 item.RefreshView();
             }
+
+            SortEntry();
         }
 
         public void OnRemoveQuest(Quest quest)
